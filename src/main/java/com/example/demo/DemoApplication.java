@@ -38,7 +38,7 @@ public class DemoApplication {
             consumer = new KafkaConsumer<>(props);
 
             // Subscribe to the topic
-            consumer.subscribe(Collections.singletonList("Messages"));
+            consumer.subscribe(Collections.singletonList("testing"));
 
             // Continuously poll for new messages
             while (true) {
@@ -49,12 +49,10 @@ public class DemoApplication {
                     }
                 } catch (Exception e) {
                     System.err.println("Error during poll: " + e.getMessage());
-                    e.printStackTrace();
                 }
             }
         } catch (Exception e) {
             System.err.println("Error creating or using consumer: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             // Close the consumer
             if (consumer != null) {
@@ -62,7 +60,6 @@ public class DemoApplication {
                     consumer.close();
                 } catch (Exception e) {
                     System.err.println("Error closing consumer: " + e.getMessage());
-                    e.printStackTrace();
                 }
             }
         }
@@ -84,7 +81,7 @@ public class DemoApplication {
             producer = new KafkaProducer<>(props);
 
             // Create a producer record
-            ProducerRecord<String, String> record = new ProducerRecord<>("Messages", "key", "Hello, Kafka!");
+            ProducerRecord<String, String> record = new ProducerRecord<>("testing", "key", "Hello, Kafka!");
 
             // Send the record with a callback to handle exceptions
             producer.send(record, new Callback() {
@@ -92,7 +89,6 @@ public class DemoApplication {
                 public void onCompletion(RecordMetadata metadata, Exception exception) {
                     if (exception != null) {
                         System.err.println("Error sending record: " + exception.getMessage());
-                        exception.printStackTrace();
                     } else {
                         System.out.println("Record sent successfully to topic " + metadata.topic() + " partition " + metadata.partition() + " at offset " + metadata.offset());
                     }
@@ -101,7 +97,6 @@ public class DemoApplication {
 
         } catch (Exception e) {
             System.err.println("Error creating or sending producer: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             // Close the producer
             if (producer != null) {
@@ -109,7 +104,6 @@ public class DemoApplication {
                     producer.close();
                 } catch (Exception e) {
                     System.err.println("Error closing producer: " + e.getMessage());
-                    e.printStackTrace();
                 }
             }
         }
